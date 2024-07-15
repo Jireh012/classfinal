@@ -75,20 +75,24 @@ public class ClassFinalPlugin extends AbstractMojo {
         List<String> cfgFileList = StrUtils.toList(cfgfiles);
         includeJarList.add("-");
 
-        JarEncryptor encryptor = new JarEncryptor(targetJar, password.trim().toCharArray());
-        encryptor.setCode(StrUtils.isEmpty(code) ? null : code.trim().toCharArray());
-        encryptor.setPackages(packageList);
-        encryptor.setIncludeJars(includeJarList);
-        encryptor.setExcludeClass(excludeClassList);
-        encryptor.setClassPath(classPathList);
-        encryptor.setCfgfiles(cfgFileList);
-        String result = encryptor.doEncryptJar();
-        long t2 = System.currentTimeMillis();
+        List<String> codeList = StrUtils.toList(code);
+        for (String code : codeList) {
+            JarEncryptor encryptor = new JarEncryptor(targetJar, password.trim().toCharArray());
+            encryptor.setCode(StrUtils.isEmpty(code) ? null : code.trim().toCharArray());
+            encryptor.setPackages(packageList);
+            encryptor.setIncludeJars(includeJarList);
+            encryptor.setExcludeClass(excludeClassList);
+            encryptor.setClassPath(classPathList);
+            encryptor.setCfgfiles(cfgFileList);
+            String result = encryptor.doEncryptJar();
+            long t2 = System.currentTimeMillis();
 
-        logger.info("Encrypt " + encryptor.getEncryptFileCount() + " classes");
-        logger.info("Encrypted " + project.getPackaging() + " [" + result + "]");
+            logger.info("Encrypted " + project.getPackaging() + " [" + result + "]");
+            logger.info("Encrypt [" + code + "] complete");
+            logger.info("Time [" + ((t2 - t1) / 1000d) + " s]");
+        }
         logger.info("Encrypt complete");
-        logger.info("Time [" + ((t2 - t1) / 1000d) + " s]");
+        logger.info("Time [" + ((System.currentTimeMillis() - t1) / 1000d) + " s]");
         logger.info("");
     }
 

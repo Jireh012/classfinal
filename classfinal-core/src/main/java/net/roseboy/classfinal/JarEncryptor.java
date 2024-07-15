@@ -420,7 +420,7 @@ public class JarEncryptor {
         IoUtils.delete(new File(this.targetDir, "META-INF/maven"));
 
         //[2]再打包jar
-        String targetJar = jarPath.replace("." + jarOrWar, "-encrypted." + jarOrWar);
+        String targetJar = jarPath.replace("." + jarOrWar, "-encrypted-" + String.copyValueOf(this.code) + "." + jarOrWar);
         String result = JarUtils.doJar(this.targetDir.getAbsolutePath(), targetJar);
         IoUtils.delete(this.targetDir);
         Log.debug("打包: " + targetJar);
